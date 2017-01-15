@@ -51,6 +51,11 @@ ISR(USART_RXC_vect)
 {
 //	if(status&0x80) return;
 	BUF[COUNT]=UDR;
+
+//while ( !(UCSRA & (1<<UDRE)) );
+//UDR = BUF[COUNT];			        
+
+	
 	if(UCSRA&0x1C)
 		status|=0x10;
 	if(status&0x20)
