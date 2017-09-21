@@ -3,7 +3,7 @@
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>5.0</ProjectVersion>
-    <ProjectGuid>{7972ed89-fedf-4ea2-b31b-983601541857}</ProjectGuid>
+    <ProjectGuid>{fc1747bb-c29c-4148-9407-02ea2857a143}</ProjectGuid>
     <avrdevice>ATmega8</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
@@ -18,9 +18,9 @@
     <GlobalToolchainPath>C:\Program Files\Atmel\AVR Studio 5.0\AVR ToolChain\bin</GlobalToolchainPath>
     <AvrGccProjectExtensions>
     </AvrGccProjectExtensions>
-    <AssemblyName>atmega8-1</AssemblyName>
-    <Name>atmega8-1</Name>
-    <RootNamespace>atmega8-1</RootNamespace>
+    <AssemblyName>atmega8-3</AssemblyName>
+    <Name>atmega8-3</Name>
+    <RootNamespace>atmega8-3</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -62,12 +62,12 @@
 </MemorySegments>
     </MemorySettings>
     <GenerateHexFile>True</GenerateHexFile>
-    <GenerateMapFile>True</GenerateMapFile>
-    <GenerateListFile>True</GenerateListFile>
-    <GenerateEepFile>True</GenerateEepFile>
+    <GenerateMapFile>False</GenerateMapFile>
+    <GenerateListFile>False</GenerateListFile>
+    <GenerateEepFile>False</GenerateEepFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="atmega8-1.c">
+    <Compile Include="atmega8-3.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

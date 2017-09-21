@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # AvrStudio Solution File, Format Version 11.00
-Project("{D1100916-62DA-4D80-A9B4-55A1E7CCEEB3}") = "atmega8-1", "atmega8-1\atmega8-1.avrgccproj", "{7972ED89-FEDF-4EA2-B31B-983601541857}"
+Project("{D1100916-62DA-4D80-A9B4-55A1E7CCEEB3}") = "atmega8-3", "atmega8-3\atmega8-3.avrgccproj", "{FC1747BB-C29C-4148-9407-02EA2857A143}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|AVR = Release|AVR
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7972ED89-FEDF-4EA2-B31B-983601541857}.Debug|AVR.ActiveCfg = Debug|AVR
-		{7972ED89-FEDF-4EA2-B31B-983601541857}.Debug|AVR.Build.0 = Debug|AVR
-		{7972ED89-FEDF-4EA2-B31B-983601541857}.Release|AVR.ActiveCfg = Release|AVR
-		{7972ED89-FEDF-4EA2-B31B-983601541857}.Release|AVR.Build.0 = Release|AVR
+		{FC1747BB-C29C-4148-9407-02EA2857A143}.Debug|AVR.ActiveCfg = Debug|AVR
+		{FC1747BB-C29C-4148-9407-02EA2857A143}.Debug|AVR.Build.0 = Debug|AVR
+		{FC1747BB-C29C-4148-9407-02EA2857A143}.Release|AVR.ActiveCfg = Release|AVR
+		{FC1747BB-C29C-4148-9407-02EA2857A143}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -127,6 +127,54 @@ ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
 
+[GeneratedDocument1]
+DocumentPath=Project Outputs for rs485m\Design Rule Check - rs485m.html
+DItemRevisionGUID=
+
+[GeneratedDocument2]
+DocumentPath=Project Outputs for rs485m\rs485m.DRR
+DItemRevisionGUID=
+
+[GeneratedDocument3]
+DocumentPath=Project Outputs for rs485m\rs485m.EXTREP
+DItemRevisionGUID=
+
+[GeneratedDocument4]
+DocumentPath=Project Outputs for rs485m\rs485m.GBL
+DItemRevisionGUID=
+
+[GeneratedDocument5]
+DocumentPath=Project Outputs for rs485m\rs485m.GBS
+DItemRevisionGUID=
+
+[GeneratedDocument6]
+DocumentPath=Project Outputs for rs485m\rs485m.GM31
+DItemRevisionGUID=
+
+[GeneratedDocument7]
+DocumentPath=Project Outputs for rs485m\rs485m.GTL
+DItemRevisionGUID=
+
+[GeneratedDocument8]
+DocumentPath=Project Outputs for rs485m\rs485m.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument9]
+DocumentPath=Project Outputs for rs485m\rs485m.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument10]
+DocumentPath=Project Outputs for rs485m\rs485m.REP
+DItemRevisionGUID=
+
+[GeneratedDocument11]
+DocumentPath=Project Outputs for rs485m\rs485m.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument12]
+DocumentPath=Project Outputs for rs485m\rs485m.TXT
+DItemRevisionGUID=
+
 [PCBConfiguration1]
 ReleaseItemId=
 CurrentRevision=
