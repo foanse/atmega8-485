@@ -7,6 +7,7 @@ volatile unsigned char status, BUF[MAX],COUNT;
 unsigned int read_registr_param(unsigned int address);
 void write_registr_param(unsigned int address, unsigned int data);
 
+
 void crc(unsigned char data){
 	unsigned char i;
 	CRC ^= data;
@@ -31,6 +32,7 @@ void sendcrc(){
 	UCSRA|=(1<<TXC);
 	UDR = (unsigned char)CRC;			        
 	while ( !(UCSRA & (1<<TXC)) );
+//	_delay_ms(50);
 	PORTD&=~(0x04);
 }
 void USART_Init(void)
@@ -41,7 +43,8 @@ void USART_Init(void)
 	UBRRL = 103;
 	UCSRA = (1<<U2X);
 	UCSRB = (1<<RXEN)|(1<<TXEN)|(1<<RXCIE);
-	UCSRC = (0<<USBS)|(1<<UCSZ0)|(1<<UCSZ1);
+	UCSRC = (1<<USBS)|(1<<UCSZ0)|(1<<UCSZ1)|(1<<URSEL);
+//	UCSRC&=~(1<<USBS);
 	//timer0 
 	TCCR0=0x00;
 	TIMSK|=(1<<TOIE0);
@@ -49,8 +52,9 @@ void USART_Init(void)
 	TCCR1A=0x00;
 	TCCR1B=0x00;
 //	TCCR1B=0x08;
-	OCR1A=0x0C;
-	OCR1B=0x1C;
+	OCR1A=0x0c;
+	//OCR1B=0x1C;
+	OCR1B=0x1c;
 	TIMSK|=(1<<OCIE1A)|(1<<OCIE1B);
 } 
 void swit(){
@@ -147,6 +151,7 @@ ISR(TIMER1_COMPB_vect)
 	if(status&0x10) goto end;
 	if((number!=BUF[0])&&(BUF[0]!=0x00)) goto end;
 	if((((unsigned char)(CRC>>8))!=BUF[COUNT-2])||(((unsigned char)CRC)!=BUF[COUNT-1])) goto end;
+//if(PORTD&0x08) PORTD&=~(0x08); else PORTD|=0x08;
 	if(number==BUF[0])PORTD|=0x04;
 	PORTD|=0x08;
 	TCCR0=0x05;

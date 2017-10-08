@@ -3,7 +3,7 @@
 #define SECOND_ID 0x03
 #define WIRE1_DDR DDRB
 #define WIRE1_PIN PINB
-#define DMAX 20 
+#define DMAX 20
 #define STEP 32767
 #define sleep _delay_ms(10)
 
@@ -14,15 +14,16 @@
 #include "../../rs485m.h"
 #include "../../1-wire.h"
 
+int		jetter
 unsigned char	LOG[0xFF],LOGr,LOGw,LOGt;
 unsigned char	MINUTE,HOUR;
 unsigned int	PLAN,BLOCK;
-unsigned int	CLOCK;
+unsigned int	CLOCK,SECONDS;
 unsigned long	TEN[2];
 unsigned char	ID_BOX[8];
-		 int	TM_BOX, TM_LAST, TM_SET,BALANS;
+int		TM_BOX, TM_LAST, TM_SET,BALANS;
 unsigned char	BUS1WIRE[DMAX][8];
-		 int	VALUE1WIRE[DMAX];
+int		VALUE1WIRE[DMAX];
 unsigned char	rscomand,AUTO;
 
 unsigned int read_registr_param(unsigned int address)
@@ -32,7 +33,8 @@ unsigned int read_registr_param(unsigned int address)
 	if(address==3)	return (LOGr<<8)|LOG[LOGr];
 	if(address==4)	return (LOGw<<8)|LOGt;
 	if(address==5)  return BALANS;
-	if(address<8)   return 0;
+	if(address==6)	return SECONDS;
+	if(address==7)	return jetter;
 	if(address==8)	return ((PORTB&0x08)>>3)|((PORTB&0x10)>>3);
 	if(address<11)	return (unsigned short)TEN[address-9];
 	if(address<32)	return 0;
@@ -70,7 +72,9 @@ void write_registr_param(unsigned int address, unsigned int data)
 		}
 		return;
 		}
-	if(address<8)return;
+	if(address<6)return;
+	if(address==6){SECONDS=0;return;}
+	if(address==7){jetter=(unsigned char)data;return;}
 	if(address==8){
 		if(data&0x01) PORTB|=0x08; 
 		if(data&0x02) PORTB&=~(0x08);
@@ -128,7 +132,7 @@ ISR(TIMER2_OVF_vect){
 					break;
 	}
 	CLOCK++;
-	if (CLOCK>1831) {CLOCK=0;MINUTE++;HOUR++;}
+	if (CLOCK>(1831+jetter*2)) {CLOCK=0;seconds++;MINUTE++;HOUR++;}
 }
 void search1wire(void){
 	unsigned char *p, i,c,d,k;
@@ -162,15 +166,15 @@ void main(void)
 	DDRB&=~(1<<PIN);
 	PORTB&=~(1<<PIN);
 	//timer2
-//	TCCR2=0x07;
-	TCCR2=0x04;
+	TCCR2=0x07;
 	ASSR=0x00;
 	TIMSK|=(1<<TOIE2);
 	for(i=0;i<8;i++)
 		ID_BOX[i]=eeprom_read_byte(32+i);
 	number=eeprom_read_byte(1);
-	AUTO=eeprom_read_word(2);
+	AUTO=eeprom_read_byte(2);
 	TM_SET=eeprom_read_word(5);
+	jetter=eeprom_read_byte(7);
 	PLAN=eeprom_read_word(64);
 	BLOCK=eeprom_read_word(68);
 	TEN[0]=(eeprom_read_word(9)<<6);
@@ -205,7 +209,8 @@ void main(void)
 			if(PLAN&0x02) {LOGt++;TEN[1]++;}
 			rscomand&=~(0x20);
 		}
-		if(rscomand&0x80){
+//		if(rscomand&0x80){
+		if(CHECK>=60){
 			TR=TM_BOX-TM_LAST;
 			TR=TR*TR*TR*512;
 			TD=TM_BOX-TM_SET;
@@ -216,7 +221,8 @@ void main(void)
 			TS+=TD;			
 			if((TS>>1)>STEP) {ten_off();TS=0;}
 			if((TS>>1)<-STEP) {ten_on();TS=0;}
-			rscomand&=~(0x80);
+//			rscomand&=~(0x80);
+			CHECK=0;
 		}
 		if(HOUR>=60){
 			LOG[LOGw]=LOGt;
@@ -224,7 +230,7 @@ void main(void)
 			LOGw++;
 			HOUR=0;
 		}
-		if(MINUTE>=120){
+		if(MINUTE>=240){
 			if((TEN[0]>>6)!=eeprom_read_word(9)) eeprom_write_word(9,(TEN[0]>>6));
 			if((TEN[1]>>6)!=eeprom_read_word(11))eeprom_write_word(11,(TEN[1]>>6));
 			MINUTE=0;
@@ -244,22 +250,23 @@ void main(void)
 }
 
 /***********************************
-adress	count		eer			name		done
-0		1			1			number		*
-1		1			-			comand		*
-2		1			2-3			AUTO		*
-3		1			-			LOG			*
-4		1			-			LOGt		*
-5		1			-			BALANS		
-
-8		1			4			reley		*
-9		2			9-12		TEN[2]		*
-32		8			32-39		ID_BOX		*
-64		2			64-65		PLAN		
-68		2			68-69		BLOCK		
-72		1			-			TM_BOX		*
-77		1			5-6			TM_SET		*
-129		20*8		-			BUS1WIRE	*
-289		20			-			VALUE1WIRE	*
-512		512			0-511		EEPROM		*
+adress		count		eer		name		done
+0		1		1		number		*
+1		1		-		comand		*
+2		1		2		AUTO		*
+3		1		-		LOG		
+4		1		-		LOGt		
+5		1		-		BALANS		*
+6		1		-		SECONDS		*
+7		1		7		jetter		*
+8		1		4		reley		*
+9		3		9-14		TEN[3]		*
+32		32		32-63		ID_..		*
+64		2		64-65		PLAN		*
+68		2		68-69		BLOCK		*
+72		5		-		TM_..		*
+77		1		5-6		TM_SET		*
+129		20*8		-		BUS1WIRE	*
+289		20		-		VALUE1WIRE	*
+512		512		0-511		EEPROM		*
 ***********************************/
